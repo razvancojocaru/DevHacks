@@ -4,7 +4,8 @@
 3. Android Studio, IDE de JavaScript (Atom/WebStorm)
 
 4. Propunere: fiecare sa editeze fisierul asta si sa isi adauge numele ca sa verificati ca merge push-ul
-	- Razvan 
+	- Razvan
+	- Tiberiu 
 
 
 Reminder:
