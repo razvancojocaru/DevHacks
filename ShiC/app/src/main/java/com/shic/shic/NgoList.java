@@ -62,7 +62,7 @@ public class NgoList extends Activity {
     public void showProgressDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage("Loading...");
+            mProgressDialog.setMessage("Searching for nearest locations...");
             mProgressDialog.setIndeterminate(true);
         }
 

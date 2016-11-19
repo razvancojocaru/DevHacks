@@ -7,6 +7,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
@@ -18,6 +21,7 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -146,8 +150,6 @@ public class MainActivity extends FragmentActivity {
             mAuth.removeAuthStateListener(mAuthListener);
         }
         hideProgressDialog();
-        //mAuth.signOut();
-        //LoginManager.getInstance().logOut();
     }
 
     @Override
@@ -216,6 +218,26 @@ public class MainActivity extends FragmentActivity {
     public void hideProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.log_out:
+                mAuth.signOut();
+                LoginManager.getInstance().logOut();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }

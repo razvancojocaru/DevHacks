@@ -20,23 +20,25 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="102dp"
-        android:visibility="gone"/>
+        />
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="130dp"
+        android:layout_height="180dp"
+
         android:src="@drawable/logo"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="150dp"
         android:id="@+id/logo"
-        android:visibility="gone"/>
+        />
 
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:rowCount="3"
         android:columnCount="2"
+        android:visibility="gone"
         android:id="@+id/layoutCategories" >
         <RelativeLayout
             android:padding="@dimen/cat_btn_margins"
@@ -48,15 +50,18 @@
                 android:id="@+id/clothing"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
-                android:src="@drawable/stea"
-                android:paddingBottom="@dimen/cat_btn_padd_bot"/>
-            <TextView
-                android:text="Clothing"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:gravity="center"
-                android:layout_alignParentBottom="true"
-                android:layout_margin="@dimen/btntextalign"/>
+                android:src="@drawable/clothes_color"
+                android:paddingBottom="@dimen/cat_btn_padd_bot"
+                android:padding="0dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"/>
+            <!--<TextView-->
+                <!--android:text="Clothing"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:gravity="center"-->
+                <!--android:layout_alignParentBottom="true"-->
+                <!--android:layout_margin="@dimen/btntextalign"/>-->
         </RelativeLayout>
         <LinearLayout
             android:padding="@dimen/cat_btn_margins"
@@ -68,8 +73,11 @@
                 android:id="@+id/toys"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
-                android:src="@drawable/stea"
-                android:paddingBottom="@dimen/cat_btn_padd_bot"/>
+                android:src="@drawable/toys_color"
+                android:paddingBottom="@dimen/cat_btn_padd_bot"
+                android:padding="0dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"/>
         </LinearLayout>
         <LinearLayout
             android:padding="@dimen/cat_btn_margins"
@@ -81,8 +89,11 @@
                 android:id="@+id/food"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
-                android:src="@drawable/stea"
-                android:paddingBottom="@dimen/cat_btn_padd_bot"/>
+                android:src="@drawable/food_color"
+                android:paddingBottom="@dimen/cat_btn_padd_bot"
+                android:padding="0dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"/>
         </LinearLayout>
         <LinearLayout
             android:padding="@dimen/cat_btn_margins"
@@ -94,8 +105,11 @@
                 android:id="@+id/furniture"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
-                android:src="@drawable/stea"
-                android:paddingBottom="@dimen/cat_btn_padd_bot"/>
+                android:src="@drawable/furniture_color"
+                android:paddingBottom="@dimen/cat_btn_padd_bot"
+                android:padding="0dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"/>
         </LinearLayout>
         <LinearLayout
             android:padding="@dimen/cat_btn_margins"
@@ -107,8 +121,11 @@
                 android:id="@+id/appliances"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
-                android:src="@drawable/stea"
-                android:paddingBottom="@dimen/cat_btn_padd_bot"/>
+                android:src="@drawable/appliances_color"
+                android:paddingBottom="@dimen/cat_btn_padd_bot"
+                android:padding="0dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"/>
         </LinearLayout>
         <LinearLayout
             android:padding="@dimen/cat_btn_margins"
@@ -120,8 +137,11 @@
                 android:id="@+id/misc"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
-                android:src="@drawable/stea"
-                android:paddingBottom="@dimen/cat_btn_padd_bot"/>
+                android:src="@drawable/misc_color"
+                android:paddingBottom="@dimen/cat_btn_padd_bot"
+                android:padding="0dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"/>
         </LinearLayout>
 
 
