@@ -31,3 +31,4 @@ Donate App
 	- two main pages:
 		- 1. NGO can tell their story and set a reward
 		- 2. People can see all the stories and choose one or more to donate to
+asdasdasd
