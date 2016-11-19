@@ -15,6 +15,7 @@ git pull --rebase
 ---merge if necessary---
 git push
 
+some change
 
 Donate App
 
