@@ -32,3 +32,15 @@ Donate App
 		- 1. NGO can tell their story and set a reward
 		- 2. People can see all the stories and choose one or more to donate to
 Claudiu second change
+
+
+Tasks:
+	- Claudiu:
+		- Landing page
+		- Main Page
+	- Razvan:
+		- Activities
+	- Cosmin:
+		- Activities
+	- Tiberiu:
+		- Design
