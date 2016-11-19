@@ -5,9 +5,9 @@
 
 4. Propunere: fiecare sa editeze fisierul asta si sa isi adauge numele ca sa verificati ca merge push-ul
 	- Razvan
-	- Tiberiu 
+	- Tiberiu
 	- Coooosmin
-
+Claudiu Change
 Reminder:
 git add .
 git commit -m "commit message"
