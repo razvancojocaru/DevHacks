@@ -10,12 +10,14 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 class NgoListAdapter extends BaseAdapter{
-    String[] names;
-    String[] causes;
+    ArrayList<String> names;
+    ArrayList<String> causes;
     Context context;
     private static LayoutInflater inflater=null;
-    NgoListAdapter(Activity callerActivity, String[] names, String[] causes) {
+    NgoListAdapter(Activity callerActivity, ArrayList<String> names, ArrayList<String> causes) {
         context = callerActivity;
         this.names = names;
         this.causes = causes;
@@ -24,7 +26,7 @@ class NgoListAdapter extends BaseAdapter{
     }
     @Override
     public int getCount() {
-        return names.length;
+        return names.size();
     }
 
     @Override
@@ -50,16 +52,16 @@ class NgoListAdapter extends BaseAdapter{
         View rowView;
         rowView = inflater.inflate(R.layout.list_ngo_elem, null);
         holder.name = (TextView) rowView.findViewById(R.id.name);
-        holder.name.setText(names[position]);
+        holder.name.setText(names.get(position));
         holder.cause = (TextView) rowView.findViewById(R.id.causes);
-        holder.cause.setText(causes[position]);
+        holder.cause.setText(causes.get(position));
         holder.distance = (TextView) rowView.findViewById(R.id.distance);
         //TODO compute distance somewhere
         holder.distance.setText("");
         rowView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "You Clicked "+names[position], Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "You Clicked "+names.get(position), Toast.LENGTH_LONG).show();
             }
         });
         return rowView;
