@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "156241042556",
+    "firebase_url": "https://devhacks-eb8fc.firebaseio.com",
+    "project_id": "devhacks-eb8fc",
+    "storage_bucket": "devhacks-eb8fc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:156241042556:android:325e7bd3e62e7750",
+        "android_client_info": {
+          "package_name": "com.shic.shic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "156241042556-e4a1cli5p3po08jrn1thhmhns0pe1ipt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUt602QHY6RXPA0wHkalIjR9pSjARRjIw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
