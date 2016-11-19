@@ -14,3 +14,19 @@ git commit -m "commit message"
 git pull --rebase
 ---merge if necessary---
 git push
+
+
+Donate App
+
+- Kickstarter style to donate unwanted items: clothes and others
+- Idea:
+	- NGOs and other foster homes can share their stories
+	- People choose to donate to a story that they consider valuable
+	- People that donate to a certain place can get a symbolic reward
+		- if the foster home craft some hand made objects or other stuffs
+	- People can track the donation process
+
+- Starting idea:
+	- two main pages:
+		- 1. NGO can tell their story and set a reward
+		- 2. People can see all the stories and choose one or more to donate to
