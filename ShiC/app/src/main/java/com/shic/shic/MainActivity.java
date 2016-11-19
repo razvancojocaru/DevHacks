@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,6 +66,7 @@ public class MainActivity extends FragmentActivity {
             categoryButtons[i] = (ImageButton)findViewById(imageCategories[i]);
             categoryButtons[i].setOnClickListener(new CategoryListener(categories[i]));
         }
+
 
 
         mAuth = FirebaseAuth.getInstance();
