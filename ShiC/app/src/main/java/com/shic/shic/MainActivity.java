@@ -8,6 +8,8 @@ import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.GridLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,7 +19,6 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -42,9 +43,12 @@ public class MainActivity extends FragmentActivity {
     public ProgressDialog mProgressDialog;
 
     /* Define views */
-    TextView tv;
     ImageView mLogo;
     LoginButton loginButton;
+    GridLayout layoutCategories;
+    ImageButton[] categoryButtons = new ImageButton[6];
+    int[] imageCategories = {R.id.clothing, R.id.toys, R.id.food, R.id.furniture, R.id.appliances, R.id.misc};
+    String[] categories = {"clothing", "toys", "food", "furniture", "appliances", "misc"};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,11 +58,17 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
 
         /* Init views */
-        tv = (TextView)findViewById(R.id.textView);
         mLogo = (ImageView)findViewById(R.id.logo);
+        layoutCategories = (GridLayout)findViewById(R.id.layoutCategories);
+
+        for (int i = 0; i < categoryButtons.length; i++) {
+            categoryButtons[i] = (ImageButton)findViewById(imageCategories[i]);
+            categoryButtons[i].setOnClickListener(new CategoryListener(categories[i]));
+        }
 
 
         mAuth = FirebaseAuth.getInstance();
+
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -105,6 +115,23 @@ public class MainActivity extends FragmentActivity {
 
         //updateUI(null);
     }
+
+    class CategoryListener implements View.OnClickListener {
+
+        String categoryName;
+
+        CategoryListener(String categoryName) {
+            this.categoryName = categoryName;
+        }
+
+        @Override
+        public void onClick(View view) {
+            Intent i = new Intent(getApplicationContext(), NgoList.class);
+            i.setAction(categoryName);
+            startActivity(i);
+        }
+    }
+
 
     @Override
     public void onStart() {
@@ -163,13 +190,14 @@ public class MainActivity extends FragmentActivity {
         if (user != null) {
             //TODO set visibility visible on LOGO and FB login button
             //TODO set visibility View.GONE on everything else
-            tv.setVisibility(View.VISIBLE);
-            tv.setText("Salut, " + user.getDisplayName());
+            layoutCategories.setVisibility(View.VISIBLE);
+            getActionBar().show();
             loginButton.setVisibility(View.GONE);
             mLogo.setVisibility(View.GONE);
         } else {
             //TODO other way around, show everything
-            tv.setVisibility(View.GONE);
+            layoutCategories.setVisibility(View.GONE);
+            getActionBar().hide();
             loginButton.setVisibility(View.VISIBLE);
             mLogo.setVisibility(View.VISIBLE);
         }
