@@ -1,10 +1,15 @@
 package com.shic.shic;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -33,6 +38,14 @@ public class MainActivity extends FragmentActivity {
 
     private CallbackManager mCallbackManager;
 
+    @VisibleForTesting
+    public ProgressDialog mProgressDialog;
+
+    /* Define views */
+    TextView tv;
+    ImageView mLogo;
+    LoginButton loginButton;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,11 +53,12 @@ public class MainActivity extends FragmentActivity {
         FacebookSdk.setApplicationId(getResources().getString(R.string.facebook_app_id));
         setContentView(R.layout.activity_main);
 
-        Log.d(TAG, "Starting...");
-        // [START initialize_auth]
-        // Initialize Firebase Auth
+        /* Init views */
+        tv = (TextView)findViewById(R.id.textView);
+        mLogo = (ImageView)findViewById(R.id.logo);
+
+
         mAuth = FirebaseAuth.getInstance();
-        // [END initialize_auth]
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -53,18 +67,19 @@ public class MainActivity extends FragmentActivity {
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    updateUI(user);
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
-                    updateUI(user);
+                    updateUI(null);
                 }
             }
         };
+        mAuth.addAuthStateListener(mAuthListener);
 
-        // [START initialize_fblogin]
         // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
-        LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
+        loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.setReadPermissions("email", "public_profile");
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -76,41 +91,37 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onCancel() {
                 Log.d(TAG, "facebook:onCancel");
-                // [START_EXCLUDE]
-                //updateUI(null);
-                // [END_EXCLUDE]
+                updateUI(null);
             }
 
             @Override
             public void onError(FacebookException error) {
                 Log.d(TAG, "facebook:onError", error);
-                // [START_EXCLUDE]
-                //updateUI(null);
-                // [END_EXCLUDE]
+                updateUI(null);
             }
         });
-        // [END initialize_fblogin]*/
+
+        //assume user not logged in
+
+        //updateUI(null);
     }
 
-    // [START on_start_add_listener]
     @Override
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
     }
-    // [END on_start_add_listener]
 
-    // [START on_stop_remove_listener]
     @Override
     public void onStop() {
         super.onStop();
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
-        mAuth.signOut();
-        LoginManager.getInstance().logOut();
+        hideProgressDialog();
+        //mAuth.signOut();
+        //LoginManager.getInstance().logOut();
     }
-    // [END on_stop_remove_listener]
 
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
@@ -119,12 +130,9 @@ public class MainActivity extends FragmentActivity {
     }
 
 
-    // [START auth_with_facebook]
     private void handleFacebookAccessToken(AccessToken token) {
         Log.d(TAG, "handleFacebookAccessToken:" + token);
-        // [START_EXCLUDE silent]
-        //showProgressDialog();
-        // [END_EXCLUDE]
+        showProgressDialog();
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
@@ -142,13 +150,10 @@ public class MainActivity extends FragmentActivity {
                                     Toast.LENGTH_SHORT).show();
                         }
 
-                        // [START_EXCLUDE]
-                        //hideProgressDialog();
-                        // [END_EXCLUDE]
+                        hideProgressDialog();
                     }
                 });
     }
-    // [END auth_with_facebook]
 
     /*
     * Hide Sign in with facebook buttons and logo
@@ -158,8 +163,31 @@ public class MainActivity extends FragmentActivity {
         if (user != null) {
             //TODO set visibility visible on LOGO and FB login button
             //TODO set visibility View.GONE on everything else
+            tv.setVisibility(View.VISIBLE);
+            tv.setText("Salut, " + user.getDisplayName());
+            loginButton.setVisibility(View.GONE);
+            mLogo.setVisibility(View.GONE);
         } else {
             //TODO other way around, show everything
+            tv.setVisibility(View.GONE);
+            loginButton.setVisibility(View.VISIBLE);
+            mLogo.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage("Loading...");
+            mProgressDialog.setIndeterminate(true);
+        }
+
+        mProgressDialog.show();
+    }
+
+    public void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
         }
     }
 }
