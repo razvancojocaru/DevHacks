@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -264,6 +266,10 @@ public class MainActivity extends FragmentActivity
         if (user != null) {
             layoutCategories.setVisibility(View.VISIBLE);
             getActionBar().show();
+            getActionBar().setDisplayShowHomeEnabled(true);
+            getActionBar().setLogo(R.mipmap.ic_launcher);
+            getActionBar().setDisplayUseLogoEnabled(true);
+            getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#f6f4ea")));
             loginButton.setVisibility(View.GONE);
             mLogo.setVisibility(View.GONE);
         } else {

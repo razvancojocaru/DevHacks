@@ -20,6 +20,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.Color;
+
 public class NgoList extends Activity {
 
     public static final String TAG = "NgoList";
@@ -41,7 +44,10 @@ public class NgoList extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ngo_list);
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayShowHomeEnabled(true);
+        getActionBar().setLogo(R.mipmap.ic_launcher);
+        getActionBar().setDisplayUseLogoEnabled(true);
+        getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#f6f4ea")));
 
         Intent i = getIntent();
         categoryIndex = i.getAction();

@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.Color;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -48,8 +50,10 @@ public class NGODetails extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ngodetails);
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setTitle("ShiC");
+        getActionBar().setDisplayShowHomeEnabled(true);
+        getActionBar().setLogo(R.mipmap.ic_launcher);
+        getActionBar().setDisplayUseLogoEnabled(true);
+        getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#f6f4ea")));
 
         ngoName = (TextView) findViewById(R.id.textNGOName);
         btn = (Button) findViewById(R.id.ngoDonateButton);

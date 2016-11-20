@@ -5,7 +5,9 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f6f4ea"
     tools:context="com.shic.shic.MainActivity">
+
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"
