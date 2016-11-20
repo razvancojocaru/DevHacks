@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -25,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -54,8 +57,7 @@ import java.security.NoSuchAlgorithmException;
 
 
 public class MainActivity extends FragmentActivity
-        implements LocationListener
-        /*implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener*/ {
+        implements LocationListener {
 
     private static final String TAG = "MainActivity";
 
@@ -67,8 +69,6 @@ public class MainActivity extends FragmentActivity
     @VisibleForTesting
     public ProgressDialog mProgressDialog;
 
-    GoogleApiClient mGoogleApiClient;
-    Location mLastLocation;
     LocationManager locationManager;
     Location currentLocation;
 
@@ -110,15 +110,6 @@ public class MainActivity extends FragmentActivity
             categoryButtons[i] = (ImageButton) findViewById(imageCategories[i]);
             categoryButtons[i].setOnClickListener(new CategoryListener(categories[i]));
         }
-
-//        // Create an instance of GoogleAPIClient.
-//        if (mGoogleApiClient == null) {
-//            mGoogleApiClient = new GoogleApiClient.Builder(this)
-//                    .addConnectionCallbacks(this)
-//                    .addOnConnectionFailedListener(this)
-//                    .addApi(LocationServices.API)
-//                    .build();
-//        }
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -164,10 +155,6 @@ public class MainActivity extends FragmentActivity
             }
         });
 
-        //assume user not logged in
-
-        //updateUI(null);
-
         locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(getApplicationContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -181,7 +168,7 @@ public class MainActivity extends FragmentActivity
         criteria.setCostAllowed(true);
         String provider = locationManager.getBestProvider(criteria, true);
         currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        locationManager.requestLocationUpdates(provider, 1, 1, this);
+        locationManager.requestLocationUpdates(provider, 1000, 5, this);
 
     }
 
@@ -204,36 +191,6 @@ public class MainActivity extends FragmentActivity
     public void onProviderDisabled(String s) {
 
     }
-
-//    @Override
-//    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-//
-//    }
-//
-//    @Override
-//    public void onConnected(@Nullable Bundle bundle) {
-//        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            // TODO: Consider calling
-//            //    ActivityCompat#requestPermissions
-//            // here to request the missing permissions, and then overriding
-//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//            //                                          int[] grantResults)
-//            // to handle the case where the user grants the permission. See the documentation
-//            // for ActivityCompat#requestPermissions for more details.
-//            return;
-//        }
-//        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-//                mGoogleApiClient);
-//        if (mLastLocation != null) {
-//            //TODO check or smth
-//            Log.d(TAG, mLastLocation.getLatitude() + " " + mLastLocation.getLongitude());
-//        }
-//    }
-//
-//    @Override
-//    public void onConnectionSuspended(int i) {
-//
-//    }
 
     class CategoryListener implements View.OnClickListener {
 
@@ -262,7 +219,6 @@ public class MainActivity extends FragmentActivity
 
     @Override
     public void onStop() {
-        //mGoogleApiClient.disconnect();
         super.onStop();
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
@@ -310,6 +266,10 @@ public class MainActivity extends FragmentActivity
         if (user != null) {
             layoutCategories.setVisibility(View.VISIBLE);
             getActionBar().show();
+            getActionBar().setDisplayShowHomeEnabled(true);
+            getActionBar().setLogo(R.mipmap.ic_launcher);
+            getActionBar().setDisplayUseLogoEnabled(true);
+            getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#f6f4ea")));
             loginButton.setVisibility(View.GONE);
             mLogo.setVisibility(View.GONE);
         } else {
@@ -351,6 +311,9 @@ public class MainActivity extends FragmentActivity
                 mAuth.signOut();
                 LoginManager.getInstance().logOut();
                 return true;
+            case R.id.history:
+                Intent i = new Intent(MainActivity.this, HistoryActivity.class);
+                startActivity(i);
             default:
                 return super.onOptionsItemSelected(item);
         }

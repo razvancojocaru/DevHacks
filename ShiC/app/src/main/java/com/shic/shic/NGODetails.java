@@ -11,20 +11,28 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.Color;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class NGODetails extends Activity {
 
     /* Define views */
     TextView ngoName;
     TextView ngoDescription;
+    TextView tvAddress;
     TextView ngoTelephone;
     TextView ngoWebsite;
     Button btn;
@@ -33,6 +41,7 @@ public class NGODetails extends Activity {
     String ngoLongitude;
     String ngoAddress;
     String ongName;
+    String category;
 
     private DatabaseReference mDatabase;
     ProgressDialog mProgressDialog;
@@ -42,8 +51,10 @@ public class NGODetails extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ngodetails);
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setTitle("ShiC");
+        getActionBar().setDisplayShowHomeEnabled(true);
+        getActionBar().setLogo(R.mipmap.ic_launcher);
+        getActionBar().setDisplayUseLogoEnabled(true);
+        getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#f6f4ea")));
 
         ngoName = (TextView) findViewById(R.id.textNGOName);
         btn = (Button) findViewById(R.id.ngoDonateButton);
@@ -56,7 +67,10 @@ public class NGODetails extends Activity {
 
         Intent i = getIntent();
 
-        ongName = i.getAction().toString();
+        Bundle extras = i.getExtras();
+        category = extras.getString("category");
+
+        ongName = extras.getString("name");
         showProgressDialog();
         ngoName.setText(ongName);
 
@@ -68,6 +82,7 @@ public class NGODetails extends Activity {
                     ngoDescription = (TextView) findViewById(R.id.textNGODescription);
                     ngoTelephone = (TextView) findViewById(R.id.textNGOTelephone);
                     ngoWebsite = (TextView) findViewById(R.id.textNGOWebsite);
+                    tvAddress = (TextView) findViewById(R.id.textAddress);
 
                     ngoLatitude = snapshot.child("latitude").getValue().toString();
                     ngoLongitude = snapshot.child("longitude").getValue().toString();
@@ -76,6 +91,7 @@ public class NGODetails extends Activity {
                     ngoDescription.setText(snapshot.child("address").getValue().toString());
                     ngoTelephone.setText("Phone: "+snapshot.child("telephone").getValue().toString());
                     ngoWebsite.setText(snapshot.child("website").getValue().toString());
+                    tvAddress.setText(snapshot.child("goal").getValue().toString());
                 }
             }
 
@@ -108,6 +124,22 @@ public class NGODetails extends Activity {
         extras.putString("name",ongName);
         extras.putString("address",ngoAddress);
         intent.putExtras(extras);
+
+        FirebaseAuth mAuth;
+        mAuth = FirebaseAuth.getInstance();
+
+        DatabaseReference mDatabase;
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        DatabaseReference ref = mDatabase.child("users").child(mAuth.getCurrentUser().getUid());
+
+        Map data = new HashMap();
+        data.put("donation_category", category);
+        data.put("donation_location", ongName);
+        data.put("donation_status","PENDING");
+        data.put("timestamp", ServerValue.TIMESTAMP);
+        ref.push().setValue(data);
+
         startActivity(intent);
     }
 

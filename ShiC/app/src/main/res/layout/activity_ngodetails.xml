@@ -8,6 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#f6f4ea"
     tools:context="com.shic.shic.NGODetails">
 
     <TextView
@@ -27,30 +28,51 @@
         android:layout_above="@+id/ngoDonateButton"
         android:layout_centerHorizontal="true">
 
-        <TextView
-            android:layout_width="match_parent"
+        <ScrollView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/textNGOName"
-            android:layout_marginTop="15dp"
-            android:id="@+id/textNGODescription" />
+            android:scrollbarStyle="insideOverlay">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/textNGODescription"
-            android:layout_marginTop="15dp"
-            android:id="@+id/textNGOTelephone" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/textNGOTelephone"
-            android:layout_marginTop="15dp"
-            android:id="@+id/textNGOWebsite"
-            android:autoLink="web" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/textNGOName"
+                    android:layout_marginTop="15dp"
+                    android:id="@+id/textNGODescription" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/textNGODescription"
+                    android:layout_marginTop="15dp"
+                    android:id="@+id/textNGOTelephone" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/textNGOTelephone"
+                    android:layout_marginTop="15dp"
+                    android:id="@+id/textNGOWebsite"
+                    android:autoLink="web" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/textNGOWebsite"
+                    android:gravity="left"
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/textAddress" />
+            </LinearLayout>
+        </ScrollView>
 
     </LinearLayout>
 
@@ -61,7 +83,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="50dp"
         android:paddingRight="50dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="20dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/ngoDonateButton"/>
