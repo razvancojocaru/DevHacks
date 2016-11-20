@@ -1,22 +1,95 @@
-body {
-    background-color: #fff1be;
-}
-
 .header-background {
   position: relative;
   display: block;
   width: 100%;
   height: 270px;
-  background: url('./cover-photo.png');
+  background: url('./img/ShiC_website_header.png');
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;
 }
 
-.container {
-    margin-top: 30px;
+body {
+    background-color: #f6f4ea;
+    height: 100%;
+}
+
+.navbar-nav {
+    margin-left: 10px;
 }
 
 .categories-row {
     margin-bottom: 5px;
+}
+
+.category {
+    cursor: pointer;
+}
+
+.page-footer {
+    padding: 0;
+
+}
+
+/* LANDING PAGE FULLSCREEN VIDEO */
+.landing-page {
+    background-color: #fff;
+}
+
+.homepage-hero-module {
+    border-right: none;
+    border-left: none;
+    position: relative;
+}
+.no-video .video-container video,
+.touch .video-container video {
+    display: none;
+}
+.no-video .video-container .poster,
+.touch .video-container .poster {
+    display: block !important;
+}
+.video-container {
+    position: relative;
+    bottom: 0%;
+    left: 0%;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background: #000;
+}
+.video-container .poster img {
+    width: 100%;
+    bottom: 0;
+    position: absolute;
+}
+.video-container .filter {
+    z-index: 100;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.4);
+    width: 100%;
+}
+.video-container video {
+    position: absolute;
+    z-index: 0;
+    bottom: 0;
+}
+.video-container video.fillWidth {
+    width: 100%;
+}
+
+.about {
+    color: #fff3e0;
+}
+
+/* ACTIVITY PAGE */
+.badge-image {
+    height: 50px;
+}
+
+#history {
+    background-color: #fff;
+}
+
+.donation-status {
+    margin-top: 10px;
 }

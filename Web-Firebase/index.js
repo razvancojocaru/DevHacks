@@ -1,3 +1,6 @@
+var map;
+var markers = [];
+var category;
 // Initialize Firebase
 var config = {
     apiKey: "AIzaSyBdG8UT9PC-83GWXnnAMupvLfdoGrMZfy0",
@@ -8,85 +11,197 @@ var config = {
 };
 firebase.initializeApp(config);
 
-// FACEBOOK LOGIN
-$( ".signIn" ).click(function() {
-    if (firebase.auth().currentUser) {
-        firebase.auth().signOut();
-        $( ".signIn > span" ).text("Facebook");
-    } else {
-        var provider = new firebase.auth.FacebookAuthProvider();
-        firebase.auth().signInWithPopup(provider).then(function(result) {
-          // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-          var token = result.credential.accessToken;
-          // The signed-in user info.
-          var user = result.user;
-          console.log(user);
-          $( ".signIn > span" ).text("Log Out");
-          // ...
-        }).catch(function(error) {
-          // Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          // The email of the user's account used.
-          var email = error.email;
-          // The firebase.auth.AuthCredential type that was used.
-          var credential = error.credential;
-          // ...
-          console.log(errorCode, errorMessage, credential);
-        });
+$( document ).ready(function() {
+    $( "#map-container" ).height($( "#categories" ).height());
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+        // User is signed in.
+        // GOOGLE MAPS INIT
+            map = new google.maps.Map(document.getElementById('map-container'), {
+              zoom: 10,
+              center: new google.maps.LatLng(44.471689, 26.133213),
+              mapTypeId: google.maps.MapTypeId.ROADMAP
+            });
 
-    }
+            getNGOs('0');
+        }
+    });
+
+    $( "#signOut" ).click(function() {
+        firebase.auth().signOut();
+        window.location.replace("./landing_page.html");
+    });
+
 });
 
 // FIREBASE DATABASE MANIPULATION
-
-var database = firebase.database();
-
-$( ".getUsers" ).click(function() {
+function getNGOs(category) {
     var userId = firebase.auth().currentUser.uid;
-    var path = firebase.database().ref('users/' + userId).once('value').then(function(snapshot){
-        console.log(snapshot.val());
+    var path = firebase.database().ref('NGOs/').once('value', function(snapshot){
+        snapshot.forEach(function(childSnapshot){
+            var name = childSnapshot.key;
+            var childData = childSnapshot.val();
+            var categories = childData.categories;
+            var domain = childData.domains;
+            var goal = childData.goal;
+            var telephone = childData.telephone;
+            var website = childData.website;
+            var latitude = childData.latitude;
+            var longitude = childData.longitude;
+
+            var contentString = '<div id="content">'+
+                                    '<div id="siteNotice">'+
+                                    '</div>'+
+                                    '<div id="bodyContent">'+
+                                        '<h4 id="ong_name">' + name + '</h4>' +
+                                        '<h5>' + domain + '</h5>' +
+                                        '<p class="text-center">' +
+                                            goal +
+                                        '</p>' +
+                                        '<p><span><i class="fa fa-globe" aria-hidden="true"></i><a href="'+ website +'"> ' + website + '</a></span></p>' +
+                                        '<p><span><i class="fa fa-phone" aria-hidden="true"></i> ' + telephone + '</span></p>' +
+                                        '<button class="btn btn-defautl pull-right" onClick="donate();"><i class="fa fa-shopping-cart" aria-hidden="true"></i></button>' +
+                                    '</div>' +
+                                '</div>';
+
+
+            if (category === '0') {
+                addMarker(latitude, longitude, contentString);
+            }
+            else if (categories.hasOwnProperty(category)) {
+                addMarker(latitude, longitude, contentString);
+            }
+        });
+
+        setMapOnAll(map);
     });
+}
+
+$( ".category" ).click(function() {
+    category = $( this ).attr('id');
+    clearMarkers();
+    getNGOs(category);
 });
 
+function clearMarkers() {
+    setMapOnAll(null);
+    markers = [];
+  }
 
-// GOOGLE MAPS INIT
-var map = new google.maps.Map(document.getElementById('map-container'), {
-  zoom: 10,
-  center: new google.maps.LatLng(-33.92, 151.25),
-  mapTypeId: google.maps.MapTypeId.ROADMAP
-});
+function setMapOnAll(map) {
+    for (var i = 0; i < markers.length; i++) {
+      markers[i].setMap(map);
+    }
+  }
 
-function addMarker(latitude, longitude) {
-    var contentString = '<div id="content">'+
-                '<div id="siteNotice">'+
-                '</div>'+
-                    '<h1 id="firstHeading" class="firstHeading">Crucea Rosie Romana</h1>'+
-                    '<h2>Copii, batrani</h2>' +
-                    '<div id="bodyContent">'+
-                        '<p>Societatea Nationala de Cruce Rosie din Romania este o organizatie' +
-                        ' umanitara membra a Miscarii Internationale de Cruce Rosie si Semiluna Rosie,' +
-                        ' auxiliara autoritatii publice si abilitata prin lege sa asigure asistenta umanitara ' +
-                        'in caz de dezastre si sa vina in sprijinul persoanelor vulnerabile. </p>'+
-                        '<a class="btn btn-default waves-effect waves-light">Default</a>' +
-                    '</div>'+
-                '</div>';
+function getCurrentLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+
+        map.setCenter(pos);
+      }, function() {
+        handleLocationError(true, infoWindow, map.getCenter());
+      });
+    } else {
+      // Browser doesn't support Geolocation
+      handleLocationError(false, infoWindow, map.getCenter());
+    }
+}
+
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+    infoWindow.setPosition(pos);
+    infoWindow.setContent(browserHasGeolocation ?
+        'Error: The Geolocation service failed.' :
+        'Error: Your browser doesn\'t support geolocation.');
+}
+
+function addMarker(latitude, longitude, contentString) {
 
     var infowindow = new google.maps.InfoWindow({
       content: contentString
     });
 
+    var location = new google.maps.LatLng(latitude,longitude);
+
     marker = new google.maps.Marker({
-      position: new google.maps.LatLng(latitude,longitude),
+      position: location,
       map: map
     });
 
     marker.addListener('click', function() {
           infowindow.open(map, marker);
-        });
+    });
+
+    markers.push(marker);
 }
 
-addMarker(44.471689, 26.133213);
+
+function donate() {
+    console.log("Donate");
+    var userId = firebase.auth().currentUser.uid;
+
+    var reference = firebase.database().ref('users/' + userId).push();
+    if (!category) {
+        $('#wrongCategory').modal();
+        return;
+    }
+
+    var path = reference.set({
+        timestamp: Date.now(),
+        donation_category: category,
+        donation_location: $( "#ong_name" ).text(),
+        donation_status: 'PENDING'
+    });
+    $('#donationSuccess').modal();
+}
 
 
-//google.maps.event.addDomListener(window, 'load', init_map);
+var categories = {1: './img/appliances_color.png', 2: './img/clothing_color.png', 3: './img/food_color.png', 4: './img/furniture_color.png', 5: './img/misc_color.png', 6: './img/toys_color.png'};
+
+function getDonations() {
+    $( '#history' ).empty();
+    var userId = firebase.auth().currentUser.uid;
+    var path = firebase.database().ref('users/' + userId).once('value', function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+            var childData = childSnapshot.val();
+            var date = new Date(childData.timestamp);
+            var newItem = '<li class="list-group-item">' +
+                '<div class="row">' +
+                    '<div class="col-md-1">' +
+                        '<img src="./img/Badges/Badge_1.png" class="badge-image"/>' +
+                    '</div>' +
+                    '<div class="col-md-3">' +
+                        '<h6 class="h5-responsive">' + new Date(childData.timestamp).toString() + '</h6>' +
+                    '</div>' +
+                    '<div class="col-md-4">' +
+                        '<h6 class="h5-responsive">' + childData.donation_location + '</h6>' +
+                    '</div>' +
+                    '<div class="col-md-2">' +
+                        '<img src="' + categories[childData.donation_category] + '" style="height: 50px;">' +
+                    '</div>' +
+                    '<div class="col-md-2">' +
+                        '<h3 class="donation-status"><span class="label label-donation-status">' + childData.donation_status + '</span></h3>' +
+                    '</div>' +
+                '</div>' +
+            '</li>';
+            $( '#history' ).append(newItem);
+
+            if (childData.donation_status === 'PENDING') {
+                $( ".label-donation-status" ).addClass( 'label-default' );
+            }
+            else {
+                $( ".label-donation-status" ).addClass( 'label-success' );
+            }
+
+            console.log(childData);
+        });
+    });
+}
+
+$( "#reloadHistory" ).click(function() {
+    getDonations();
+});
