@@ -2,6 +2,8 @@ package com.shic.shic;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,6 +40,11 @@ public class HistoryActivity extends Activity {
         donations = new ArrayList<>();
 
         lv = (ListView)findViewById(R.id.listViewHistory);
+        
+        getActionBar().setDisplayShowHomeEnabled(true);
+        getActionBar().setLogo(R.mipmap.ic_launcher);
+        getActionBar().setDisplayUseLogoEnabled(true);
+        getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#f6f4ea")));
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("users").child(mAuth.getCurrentUser().getUid())
