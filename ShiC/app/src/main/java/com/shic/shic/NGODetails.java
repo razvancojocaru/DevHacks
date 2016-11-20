@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,6 +26,7 @@ public class NGODetails extends Activity {
     TextView ngoDescription;
     TextView ngoTelephone;
     TextView ngoWebsite;
+    Button btn;
 
     String ngoLatitude;
     String ngoLongitude;
@@ -41,6 +43,13 @@ public class NGODetails extends Activity {
         getActionBar().setTitle("ShiC");
 
         ngoName = (TextView) findViewById(R.id.textNGOName);
+        btn = (Button) findViewById(R.id.ngoDonateButton);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonClickFunction(view);
+            }
+        });
 
         Intent i = getIntent();
 
