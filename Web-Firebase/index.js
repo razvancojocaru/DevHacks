@@ -23,6 +23,7 @@ $( document ).ready(function() {
               mapTypeId: google.maps.MapTypeId.ROADMAP
             });
 
+            //getCurrentLocation();
             getNGOs('0');
         }
     });
@@ -94,15 +95,41 @@ function setMapOnAll(map) {
     }
   }
 
+var location;
+
+function displayRoute() {
+
+}
+
+
+function calcRoute() {
+    var directionsService = new google.maps.DirectionsService();
+    var directionsDisplay = new google.maps.DirectionsRenderer();
+
+    var currentLocation = getCurrentLocation();
+
+    var request = {
+      origin: new google.maps.LatLng(44.434765, 26.097226),
+      destination: new google.maps.LatLng(44.424713, 26.070705),
+      // Note that Javascript allows us to access the constant
+      // using square brackets and a string value as its
+      // "property."
+      travelMode: google.maps.TravelMode['DRIVING']
+    };
+    directionsService.route(request, function(response, status) {
+    if (status == 'OK') {
+      directionsDisplay.setDirections(response);
+    }
+    });
+}
+
 function getCurrentLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(position) {
-        var pos = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
+        location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
-        map.setCenter(pos);
+        return location;
+
       }, function() {
         handleLocationError(true, infoWindow, map.getCenter());
       });
