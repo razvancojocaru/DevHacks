@@ -3,12 +3,15 @@ package com.shic.shic;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class DirectionsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -44,12 +47,29 @@ public class DirectionsActivity extends FragmentActivity implements OnMapReadyCa
         Bundle extras = i.getExtras();
         String ngoLatitude = extras.getString("latitude");
         String ngoLongitude = extras.getString("longitude");
+        String ngoName = extras.getString("name");
+        String ngoAddress = extras.getString("address");
 
         // Add a marker in Sydney and move the camera
         LatLng NGO = new LatLng(Double.parseDouble(ngoLatitude), Double.parseDouble(ngoLongitude));
 
-        mMap.addMarker(new MarkerOptions().position(NGO).title("Davai!"));
+        Marker marker = mMap.addMarker(new MarkerOptions().position(NGO).title(ngoName).snippet(ngoAddress));
+        marker.showInfoWindow();
+
+        Toast.makeText(getApplicationContext(), "Don't forget to collect you reward points from the donation drop point!", Toast.LENGTH_LONG).show();
+
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(NGO, 18));
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch(keyCode){
+            case KeyEvent.KEYCODE_BACK:
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

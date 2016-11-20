@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,6 +31,8 @@ public class NGODetails extends Activity {
 
     String ngoLatitude;
     String ngoLongitude;
+    String ngoAddress;
+    String ongName;
 
     private DatabaseReference mDatabase;
     ProgressDialog mProgressDialog;
@@ -53,7 +56,7 @@ public class NGODetails extends Activity {
 
         Intent i = getIntent();
 
-        String ongName = i.getAction().toString();
+        ongName = i.getAction().toString();
         showProgressDialog();
         ngoName.setText(ongName);
 
@@ -68,6 +71,7 @@ public class NGODetails extends Activity {
 
                     ngoLatitude = snapshot.child("latitude").getValue().toString();
                     ngoLongitude = snapshot.child("longitude").getValue().toString();
+                    ngoAddress = snapshot.child("address").getValue().toString();
 
                     ngoDescription.setText(snapshot.child("address").getValue().toString());
                     ngoTelephone.setText("Phone: "+snapshot.child("telephone").getValue().toString());
@@ -101,6 +105,8 @@ public class NGODetails extends Activity {
         Bundle extras = new Bundle();
         extras.putString("latitude",ngoLatitude);
         extras.putString("longitude",ngoLongitude);
+        extras.putString("name",ongName);
+        extras.putString("address",ngoAddress);
         intent.putExtras(extras);
         startActivity(intent);
     }
