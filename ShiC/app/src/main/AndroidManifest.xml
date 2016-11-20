@@ -26,6 +26,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDGyGagz8nEyLr8cfCt5UT9ARUUpLULQYE"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -59,6 +62,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.shic.shic.NgoList" />
         </activity>
+
+        <activity android:name=".DirectionsActivity"
+            android:label="Map"/>
 
     </application>
 
