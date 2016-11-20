@@ -5,4 +5,9 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:colorButtonNormal">#00AAA0</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
 </resources>

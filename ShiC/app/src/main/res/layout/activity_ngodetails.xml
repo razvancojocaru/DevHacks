@@ -56,6 +56,7 @@
 
     <Button
         android:text="Donate"
+        android:theme="@style/AppTheme.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="50dp"
