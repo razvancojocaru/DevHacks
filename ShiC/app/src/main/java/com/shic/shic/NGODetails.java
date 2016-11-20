@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -24,6 +25,9 @@ public class NGODetails extends Activity {
     TextView ngoDescription;
     TextView ngoTelephone;
     TextView ngoWebsite;
+
+    String ngoLatitude;
+    String ngoLongitude;
 
     private DatabaseReference mDatabase;
     ProgressDialog mProgressDialog;
@@ -53,6 +57,9 @@ public class NGODetails extends Activity {
                     ngoTelephone = (TextView) findViewById(R.id.textNGOTelephone);
                     ngoWebsite = (TextView) findViewById(R.id.textNGOWebsite);
 
+                    ngoLatitude = snapshot.child("latitude").getValue().toString();
+                    ngoLongitude = snapshot.child("longitude").getValue().toString();
+
                     ngoDescription.setText(snapshot.child("address").getValue().toString());
                     ngoTelephone.setText("Phone: "+snapshot.child("telephone").getValue().toString());
                     ngoWebsite.setText(snapshot.child("website").getValue().toString());
@@ -77,6 +84,16 @@ public class NGODetails extends Activity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void buttonClickFunction(View v)
+    {
+        Intent intent = new Intent(getApplicationContext(), DirectionsActivity.class);
+        Bundle extras = new Bundle();
+        extras.putString("latitude",ngoLatitude);
+        extras.putString("longitude",ngoLongitude);
+        intent.putExtras(extras);
+        startActivity(intent);
     }
 
     public void showProgressDialog() {
