@@ -65,7 +65,6 @@
         <activity
             android:name=".DirectionsActivity"
             android:label="Map"/>
->>>>>>> fixed map marker, added toast
     </application>
 
 </manifest>

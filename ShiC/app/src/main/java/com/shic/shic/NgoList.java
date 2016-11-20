@@ -75,7 +75,7 @@ public class NgoList extends Activity {
                 }
                 Collections.sort(ngos, new DistanceComparator());
                 lv = (ListView) findViewById(R.id.listView);
-                lv.setAdapter(new NgoListAdapter(NgoList.this, ngos));
+                lv.setAdapter(new NgoListAdapter(NgoList.this, ngos, categoryIndex));
                 hideProgressDialog();
             }
 

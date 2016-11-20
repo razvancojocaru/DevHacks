@@ -12,13 +12,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class NGODetails extends Activity {
 
@@ -33,6 +38,7 @@ public class NGODetails extends Activity {
     String ngoLongitude;
     String ngoAddress;
     String ongName;
+    String category;
 
     private DatabaseReference mDatabase;
     ProgressDialog mProgressDialog;
@@ -56,7 +62,10 @@ public class NGODetails extends Activity {
 
         Intent i = getIntent();
 
-        ongName = i.getAction().toString();
+        Bundle extras = i.getExtras();
+        category = extras.getString("category");
+
+        ongName = extras.getString("name");
         showProgressDialog();
         ngoName.setText(ongName);
 
@@ -108,6 +117,22 @@ public class NGODetails extends Activity {
         extras.putString("name",ongName);
         extras.putString("address",ngoAddress);
         intent.putExtras(extras);
+
+        FirebaseAuth mAuth;
+        mAuth = FirebaseAuth.getInstance();
+
+        DatabaseReference mDatabase;
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        DatabaseReference ref = mDatabase.child("users").child(mAuth.getCurrentUser().getUid());
+
+        Map data = new HashMap();
+        data.put("donation_category", category);
+        data.put("donation_location", ongName);
+        data.put("donation_status","PENDING");
+        data.put("timestamp", ServerValue.TIMESTAMP);
+        ref.push().setValue(data);
+
         startActivity(intent);
     }
 

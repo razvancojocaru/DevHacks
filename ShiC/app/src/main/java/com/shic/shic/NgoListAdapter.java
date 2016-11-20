@@ -3,6 +3,7 @@ package com.shic.shic;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,10 +17,12 @@ import java.util.ArrayList;
 class NgoListAdapter extends BaseAdapter {
     ArrayList<NgoList.NgoTuple> ngos;
     Context context;
+    String categoryIndex;
     private static LayoutInflater inflater=null;
-    NgoListAdapter(Activity callerActivity, ArrayList<NgoList.NgoTuple> ngos) {
+    NgoListAdapter(Activity callerActivity, ArrayList<NgoList.NgoTuple> ngos, String categoryIndex) {
         context = callerActivity;
         this.ngos = ngos;
+        this.categoryIndex = categoryIndex;
         inflater = ( LayoutInflater )context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -62,7 +65,10 @@ class NgoListAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, NGODetails.class);
-                i.setAction(ngo.name);
+                Bundle extras = new Bundle();
+                extras.putString("name",ngo.name);
+                extras.putString("category",categoryIndex);
+                i.putExtras(extras);
                 context.startActivity(i);
             }
         });
