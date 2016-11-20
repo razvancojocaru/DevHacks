@@ -1,13 +1,9 @@
 package com.shic.shic;
 
 import android.content.Intent;
-import android.provider.SyncStateContract;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
-import com.akexorcist.googledirection.DirectionCallback;
-import com.akexorcist.googledirection.GoogleDirection;
-import com.akexorcist.googledirection.model.Direction;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -55,23 +51,5 @@ public class DirectionsActivity extends FragmentActivity implements OnMapReadyCa
         mMap.addMarker(new MarkerOptions().position(NGO).title("Davai!"));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(NGO, 18));
 
-
-        String serverKey = "AIzaSyDGyGagz8nEyLr8cfCt5UT9ARUUpLULQYE";
-        LatLng destination = NGO;
-        LatLng origin = new LatLng(44.45, 26.10);
-        GoogleDirection.withServerKey(serverKey)
-                .from(origin)
-                .to(destination)
-                .execute(new DirectionCallback() {
-                    @Override
-                    public void onDirectionSuccess(Direction direction, String rawBody) {
-                        // Do something here
-                    }
-
-                    @Override
-                    public void onDirectionFailure(Throwable t) {
-                        // Do something here
-                    }
-                });
     }
 }
