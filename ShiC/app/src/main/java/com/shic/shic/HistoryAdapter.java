@@ -2,6 +2,7 @@ package com.shic.shic;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.admin.SystemUpdatePolicy;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -95,9 +96,12 @@ public class HistoryAdapter extends BaseAdapter {
 
                                 DatabaseReference mDatabase;
                                 mDatabase = FirebaseDatabase.getInstance().getReference();
-
-                                DatabaseReference ref = mDatabase.child("users").child(mAuth.getCurrentUser().getUid());
-                                donation.status="Done";
+                                Log.d("Somewhere", donation.donationID);
+                                mDatabase.child("users")
+                                        .child(mAuth.getCurrentUser().getUid())
+                                        .child(donation.donationID).child("donation_status")
+                                        .setValue("DONE");
+                                donation.status="DONE";
                                 holder.status.setText(donation.status);
                                 //TODO MODIFY DB!!!!!!
                             }
