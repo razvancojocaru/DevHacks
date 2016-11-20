@@ -68,6 +68,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/textNGOWebsite"
+                    android:gravity="left"
                     android:layout_marginTop="5dp"
                     android:id="@+id/textAddress" />
             </LinearLayout>

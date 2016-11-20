@@ -40,7 +40,7 @@ public class HistoryActivity extends Activity {
         donations = new ArrayList<>();
 
         lv = (ListView)findViewById(R.id.listViewHistory);
-        
+
         getActionBar().setDisplayShowHomeEnabled(true);
         getActionBar().setLogo(R.mipmap.ic_launcher);
         getActionBar().setDisplayUseLogoEnabled(true);
