@@ -1,14 +1,21 @@
 package com.shic.shic;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -54,9 +61,9 @@ public class HistoryAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        HistoryAdapter.Holder holder = new HistoryAdapter.Holder();
+        final HistoryAdapter.Holder holder = new HistoryAdapter.Holder();
         final HistoryActivity.HistoryTuple donation = donations.get(position);
-        View rowView;
+        final View rowView;
         rowView = inflater.inflate(R.layout.list_history_elem, null);
         holder.name = (TextView) rowView.findViewById(R.id.name);
         holder.name.setText(donation.name);
@@ -76,9 +83,31 @@ public class HistoryAdapter extends BaseAdapter {
         rowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context, NGODetails.class);
-                i.setAction(donation.donationID);
-                context.startActivity(i);
+                new AlertDialog.Builder( v.getRootView().getContext() )
+                        .setTitle( "Confirm" )
+                        .setMessage( "Do you want to confirm your donation?" )
+                        .setPositiveButton( "Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                //TODO modify DB
+
+                                FirebaseAuth mAuth;
+                                mAuth = FirebaseAuth.getInstance();
+
+                                DatabaseReference mDatabase;
+                                mDatabase = FirebaseDatabase.getInstance().getReference();
+
+                                DatabaseReference ref = mDatabase.child("users").child(mAuth.getCurrentUser().getUid());
+                                donation.status="Done";
+                                holder.status.setText(donation.status);
+                                //TODO MODIFY DB!!!!!!
+                            }
+                        })
+                        .setNegativeButton( "Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        } )
+                        .show();
             }
         });
         return rowView;

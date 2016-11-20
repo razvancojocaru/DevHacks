@@ -168,7 +168,7 @@ public class MainActivity extends FragmentActivity
         criteria.setCostAllowed(true);
         String provider = locationManager.getBestProvider(criteria, true);
         currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        locationManager.requestLocationUpdates(provider, 1, 1, this);
+        locationManager.requestLocationUpdates(provider, 1000, 5, this);
 
     }
 
