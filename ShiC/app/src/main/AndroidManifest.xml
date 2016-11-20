@@ -4,6 +4,11 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_PRECISE_LOCATION"/>
+    <uses-feature android:name="android.hardware.location.gps" />
+
     <meta-data
         android:name="com.facebook.sdk.ApplicationId"
         android:value="@string/facebook_app_id" />

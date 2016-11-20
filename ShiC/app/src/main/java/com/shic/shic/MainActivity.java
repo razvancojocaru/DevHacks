@@ -1,16 +1,28 @@
 package com.shic.shic;
 
+import android.*;
+import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -24,6 +36,9 @@ import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -33,7 +48,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity
+        implements LocationListener
+        /*implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener*/ {
 
     private static final String TAG = "MainActivity";
 
@@ -45,13 +62,18 @@ public class MainActivity extends FragmentActivity {
     @VisibleForTesting
     public ProgressDialog mProgressDialog;
 
+    GoogleApiClient mGoogleApiClient;
+    Location mLastLocation;
+    LocationManager locationManager;
+    Location currentLocation;
+
     /* Define views */
     ImageView mLogo;
     LoginButton loginButton;
     GridLayout layoutCategories;
     ImageButton[] categoryButtons = new ImageButton[6];
     int[] imageCategories = {R.id.clothing, R.id.toys, R.id.food, R.id.furniture, R.id.appliances, R.id.misc};
-    String[] categories = {"clothing", "toys", "food", "furniture", "appliances", "misc"};
+    String[] categories = {"1", "2", "3", "4", "5", "6"};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,15 +83,22 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
 
         /* Init views */
-        mLogo = (ImageView)findViewById(R.id.logo);
-        layoutCategories = (GridLayout)findViewById(R.id.layoutCategories);
+        mLogo = (ImageView) findViewById(R.id.logo);
+        layoutCategories = (GridLayout) findViewById(R.id.layoutCategories);
 
         for (int i = 0; i < categoryButtons.length; i++) {
-            categoryButtons[i] = (ImageButton)findViewById(imageCategories[i]);
+            categoryButtons[i] = (ImageButton) findViewById(imageCategories[i]);
             categoryButtons[i].setOnClickListener(new CategoryListener(categories[i]));
         }
 
-
+//        // Create an instance of GoogleAPIClient.
+//        if (mGoogleApiClient == null) {
+//            mGoogleApiClient = new GoogleApiClient.Builder(this)
+//                    .addConnectionCallbacks(this)
+//                    .addOnConnectionFailedListener(this)
+//                    .addApi(LocationServices.API)
+//                    .build();
+//        }
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -118,7 +147,72 @@ public class MainActivity extends FragmentActivity {
         //assume user not logged in
 
         //updateUI(null);
+
+        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        Criteria criteria = new Criteria();
+        criteria.setAltitudeRequired(false);
+        criteria.setBearingRequired(false);
+        criteria.setCostAllowed(true);
+        String provider = locationManager.getBestProvider(criteria, true);
+        locationManager.requestLocationUpdates(provider, 1000, 5, this);
+
     }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        currentLocation = location;
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
+    }
+
+//    @Override
+//    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+//
+//    }
+//
+//    @Override
+//    public void onConnected(@Nullable Bundle bundle) {
+//        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            // TODO: Consider calling
+//            //    ActivityCompat#requestPermissions
+//            // here to request the missing permissions, and then overriding
+//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//            //                                          int[] grantResults)
+//            // to handle the case where the user grants the permission. See the documentation
+//            // for ActivityCompat#requestPermissions for more details.
+//            return;
+//        }
+//        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+//                mGoogleApiClient);
+//        if (mLastLocation != null) {
+//            //TODO check or smth
+//            Log.d(TAG, mLastLocation.getLatitude() + " " + mLastLocation.getLongitude());
+//        }
+//    }
+//
+//    @Override
+//    public void onConnectionSuspended(int i) {
+//
+//    }
 
     class CategoryListener implements View.OnClickListener {
 
@@ -131,6 +225,7 @@ public class MainActivity extends FragmentActivity {
         @Override
         public void onClick(View view) {
             Intent i = new Intent(getApplicationContext(), NgoList.class);
+            i.putExtra("coords", currentLocation);
             i.setAction(categoryName);
             startActivity(i);
         }
@@ -139,12 +234,14 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     public void onStart() {
+        //mGoogleApiClient.connect();
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
     }
 
     @Override
     public void onStop() {
+        //mGoogleApiClient.disconnect();
         super.onStop();
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
@@ -190,14 +287,11 @@ public class MainActivity extends FragmentActivity {
     * */
     private void updateUI(FirebaseUser user) {
         if (user != null) {
-            //TODO set visibility visible on LOGO and FB login button
-            //TODO set visibility View.GONE on everything else
             layoutCategories.setVisibility(View.VISIBLE);
             getActionBar().show();
             loginButton.setVisibility(View.GONE);
             mLogo.setVisibility(View.GONE);
         } else {
-            //TODO other way around, show everything
             layoutCategories.setVisibility(View.GONE);
             getActionBar().hide();
             loginButton.setVisibility(View.VISIBLE);

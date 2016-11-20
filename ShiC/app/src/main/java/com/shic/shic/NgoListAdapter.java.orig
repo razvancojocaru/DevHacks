@@ -46,9 +46,14 @@ class NgoListAdapter extends BaseAdapter {
     }
 
     @Override
+<<<<<<< e11b0515caf71df4702b4beef17480a3411f958d
+    public View getView(final int position, final View convertView, ViewGroup parent) {
+        final Holder holder=new Holder();
+=======
     public View getView(final int position, View convertView, ViewGroup parent) {
         Holder holder = new Holder();
-        final NgoList.NgoTuple ngo = ngos.get(position);
+        NgoList.NgoTuple ngo = ngos.get(position);
+>>>>>>> sorted NGO by closest first
         View rowView;
         rowView = inflater.inflate(R.layout.list_ngo_elem, null);
         holder.name = (TextView) rowView.findViewById(R.id.name);
@@ -61,9 +66,12 @@ class NgoListAdapter extends BaseAdapter {
         rowView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+<<<<<<< e11b0515caf71df4702b4beef17480a3411f958d
                 Intent i = new Intent(context, NGODetails.class);
-                i.setAction(ngo.name);
+                i.setAction(names.get(position));
                 context.startActivity(i);
+=======
+>>>>>>> sorted NGO by closest first
             }
         });
         return rowView;

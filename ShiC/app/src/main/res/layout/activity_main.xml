@@ -30,6 +30,9 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="150dp"
+
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:id="@+id/logo"
         />
 
@@ -39,6 +42,7 @@
         android:rowCount="3"
         android:columnCount="2"
         android:visibility="gone"
+        android:padding="10dp"
         android:id="@+id/layoutCategories" >
         <RelativeLayout
             android:padding="@dimen/cat_btn_margins"
@@ -146,5 +150,14 @@
 
 
     </GridLayout>
+
+    <Button
+        android:text="Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="14dp"
+        android:id="@+id/btnGPS" />
 
 </RelativeLayout>
