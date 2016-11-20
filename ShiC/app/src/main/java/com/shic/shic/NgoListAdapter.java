@@ -59,7 +59,6 @@ class NgoListAdapter extends BaseAdapter {
         holder.cause = (TextView) rowView.findViewById(R.id.causes);
         holder.cause.setText(ngo.cause);
         holder.distance = (TextView) rowView.findViewById(R.id.distance);
-        //TODO compute distance somewhere
         holder.distance.setText(String.format("%.2f", ngo.distance/1000) + "km");
         rowView.setOnClickListener(new OnClickListener() {
             @Override
