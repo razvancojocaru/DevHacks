@@ -32,6 +32,7 @@ public class NGODetails extends Activity {
     /* Define views */
     TextView ngoName;
     TextView ngoDescription;
+    TextView tvAddress;
     TextView ngoTelephone;
     TextView ngoWebsite;
     Button btn;
@@ -81,6 +82,7 @@ public class NGODetails extends Activity {
                     ngoDescription = (TextView) findViewById(R.id.textNGODescription);
                     ngoTelephone = (TextView) findViewById(R.id.textNGOTelephone);
                     ngoWebsite = (TextView) findViewById(R.id.textNGOWebsite);
+                    tvAddress = (TextView) findViewById(R.id.textAddress);
 
                     ngoLatitude = snapshot.child("latitude").getValue().toString();
                     ngoLongitude = snapshot.child("longitude").getValue().toString();
@@ -89,6 +91,7 @@ public class NGODetails extends Activity {
                     ngoDescription.setText(snapshot.child("address").getValue().toString());
                     ngoTelephone.setText("Phone: "+snapshot.child("telephone").getValue().toString());
                     ngoWebsite.setText(snapshot.child("website").getValue().toString());
+                    tvAddress.setText(snapshot.child("goal").getValue().toString());
                 }
             }
 
