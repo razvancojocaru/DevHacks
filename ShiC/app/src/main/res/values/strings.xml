@@ -3,4 +3,5 @@
     <string name="app_id">com.shic.shic</string>
     <string name="facebook_app_id">1829209253981243</string>
     <string name="fb_login_protocol_scheme">fb627188494119935</string>
+    <string name="title_activity_ngodetails">NGO Info</string>
 </resources>

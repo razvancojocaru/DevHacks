@@ -2,6 +2,7 @@ package com.shic.shic;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -47,8 +48,8 @@ class NgoListAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        Holder holder=new Holder();
+    public View getView(final int position, final View convertView, ViewGroup parent) {
+        final Holder holder=new Holder();
         View rowView;
         rowView = inflater.inflate(R.layout.list_ngo_elem, null);
         holder.name = (TextView) rowView.findViewById(R.id.name);
@@ -61,7 +62,9 @@ class NgoListAdapter extends BaseAdapter{
         rowView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "You Clicked "+names.get(position), Toast.LENGTH_LONG).show();
+                Intent i = new Intent(context, NGODetails.class);
+                i.setAction(names.get(position));
+                context.startActivity(i);
             }
         });
         return rowView;

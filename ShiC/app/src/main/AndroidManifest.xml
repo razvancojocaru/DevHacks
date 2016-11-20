@@ -33,7 +33,21 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".NgoList"></activity>
+
+        <activity android:name=".NgoList">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.shic.shic.MainActivity"/>
+        </activity>
+
+        <activity
+            android:name=".NGODetails"
+            android:label="@string/title_activity_ngodetails">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.shic.shic.NgoList" />
+        </activity>
+
     </application>
 
 </manifest>
